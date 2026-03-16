@@ -109,6 +109,7 @@ export function UploadZone({ onFileSelect, isLoading = false }: UploadZoneProps)
         <input
           ref={inputRef}
           type="file"
+          accept=".csv,.pdf"
           className="sr-only"
           onChange={onInputChange}
           disabled={isLoading}
@@ -133,7 +134,7 @@ export function UploadZone({ onFileSelect, isLoading = false }: UploadZoneProps)
               <p className="text-sm font-medium text-slate-700">
                 <span className="text-indigo-600">Click to upload</span> or drag and drop
               </p>
-              <p className="mt-1 text-xs text-slate-400">Any file up to 50 MB</p>
+              <p className="mt-1 text-xs text-slate-400">CSV or PDF up to 50 MB</p>
             </div>
           ) : (
             /* Selected file pill */

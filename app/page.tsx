@@ -5,6 +5,7 @@ import { UploadZone } from '@/components/upload-zone';
 import { StatsCards } from '@/components/stats-cards';
 import { SubscriptionCard } from '@/components/subscription-card';
 import { parseBankStatement } from '@/lib/parsers/csv-parser';
+import { parsePDFStatement } from '@/lib/parsers/pdf-parser';
 import { detectSubscriptions, calculateStats } from '@/lib/detectors/subscription-detector';
 import { Subscription, SubscriptionStats, Transaction } from '@/types';
 import { Receipt, AlertCircle, FileText, Sparkles } from 'lucide-react';
@@ -20,7 +21,17 @@ export default function Home() {
     setError(null);
 
     try {
-      const { transactions, errors } = await parseBankStatement(file);
+      // Détecter si c'est un PDF ou un CSV
+      const isPDF = file.name.toLowerCase().endsWith('.pdf');
+      
+      let result;
+      if (isPDF) {
+        result = await parsePDFStatement(file);
+      } else {
+        result = await parseBankStatement(file);
+      }
+      
+      const { transactions, errors } = result;
 
       if (errors.length > 0 && transactions.length === 0) {
         setError(errors.join('\n'));
@@ -63,7 +74,7 @@ export default function Home() {
           <div className="mb-4">
             <h2 className="text-lg font-semibold text-gray-900">Importez votre relevé bancaire</h2>
             <p className="text-sm text-gray-500">
-              Glissez votre fichier CSV exporté de votre banque pour détecter automatiquement vos abonnements
+              Glissez votre fichier CSV ou PDF (relevé bancaire) pour détecter automatiquement vos abonnements
             </p>
           </div>
           <UploadZone onFileSelect={handleFileSelect} isLoading={isLoading} />
