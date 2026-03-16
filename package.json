@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "prebuild": "cp node_modules/pdfjs-dist/build/pdf.worker.min.js public/",
+    "predev": "cp node_modules/pdfjs-dist/build/pdf.worker.min.js public/",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
